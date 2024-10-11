@@ -1,5 +1,9 @@
 //Simple Garbage Collector (GC)
 
-int main() {
+#include <string>
 
+using std::string;
+
+int main() {
+	string str = "a quick brown fox jumped over a lazy dog";
 }

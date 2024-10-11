@@ -2,48 +2,38 @@
 
 #include <vector>
 
-struct memory_block {
-	size_t size;
-	bool isFree;
-	memory_block* next_block;
-	void* data;
-	
-	memory_block(size_t s) : size(s), isFree(true), next_block(nullptr), data(nullptr) {}
-	~memory_block() {
-		free(data);
-	}
-};
+namespace My_GC {
+	struct memory_block {
+		size_t size;
+		bool isFree;
+		memory_block* next_block;
+		void* data;
 
-class managed_heap
-{
-private:
-	memory_block* BaseAddress;
-	std::vector<memory_block*> memory_blocks;
+		memory_block(size_t s) : size(s), isFree(true), next_block(nullptr), data(malloc(s)) {}
+		~memory_block() {
+			free(data);
+		}
+	};
 
-public:
-    managed_heap() = default;
-    ~managed_heap() {
+	class managed_heap
+	{
+	private:
+		memory_block* BaseAddress;
+		memory_block* LastBlock;
+		std::vector<memory_block*> memory_blocks;
 
-        for (auto block : memory_blocks) {
-            delete block; 
-        }
-    }
+		void* allocate(size_t size);
 
-    void* allocate(size_t size) {
-        memory_block* block = new memory_block(size);
-        memory_blocks.push_back(block);
-        return block->data; // Return the pointer to the allocated data
-    }
+	public:
+		managed_heap() = default; //Default constructor
+		~managed_heap() {
+			for (auto block : memory_blocks) {
+				delete block;
+			}
+		}
 
-    // Function to deallocate a block (you may need to enhance this)
-    void deallocate(void* ptr) {
-        for (auto block : memory_blocks) {
-            if (block->data == ptr) {
-                block->isFree = true;
-                break;
-            }
-        }
-    }
-	
-};
+		void* my_malloc(size_t size);
 
+		void my_free(void* ptr);
+	};
+}
