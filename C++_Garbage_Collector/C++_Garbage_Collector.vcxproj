@@ -128,10 +128,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="managed_heap.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="managed_heap.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
